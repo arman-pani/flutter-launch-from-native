@@ -82,9 +82,10 @@
         android:text="Select Text Size"
         android:textStyle="bold" />
 
-    <com.google.android.material.slider.Slider
+    <com.google.android.material.slider.RangeSlider
         android:id="@+id/textSizeSlider"
         android:valueFrom="12"
+        android:stepSize="2"
         android:valueTo="36"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
@@ -96,37 +97,30 @@
         android:text="Select Text Style"
         android:textStyle="bold" />
 
-    <LinearLayout
-        style="?android:attr/buttonBarStyle"
-        android:orientation="horizontal"
+    <RadioGroup
+        android:id="@+id/textStyleRadioGroup"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/boldStyleButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:text="Bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/italicStyleButton"
-            style="?android:attr/buttonBarButtonStyle"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Italic"
-            android:textStyle="italic" />
-
-        <Button
-            android:id="@+id/allCapsStyleButton"
-            style="?android:attr/buttonBarButtonStyle"
+            android:paddingEnd="5dp"
+            android:text="Bold"/>
+        <RadioButton android:id="@+id/radio_italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="all caps"
-            android:textAllCaps="true" />
-
-    </LinearLayout>
+            android:paddingEnd="5dp"
+            android:textStyle="italic"
+            android:text="Italic"/>
+        <RadioButton android:id="@+id/radio_allCaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="5dp"
+            android:textAllCaps="true"
+            android:text="All Caps"/>
+    </RadioGroup>
 
     <Button
         android:id="@+id/submitButton"

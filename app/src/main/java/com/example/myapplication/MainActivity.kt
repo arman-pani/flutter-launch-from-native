@@ -16,7 +16,7 @@ import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.util.logging.Handler
+import android.util.Base64
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,75 +39,60 @@ class MainActivity : AppCompatActivity() {
 
         var textColor: String = colors[0].hexString
         var textStyle = "Bold"
-        var imageBytes: ByteArray = byteArrayOf()
+        var imageString: String = ""
 
-        binding.boldStyleButton.setOnClickListener {
-            textStyle = "Bold"
-        }
-
-        binding.italicStyleButton.setOnClickListener {
-            textStyle = "Italic"
-        }
-
-        binding.allCapsStyleButton.setOnClickListener {
-            textStyle = "All Caps"
-        }
+       binding.textStyleRadioGroup.setOnCheckedChangeListener {_, checkedId ->
+           when (checkedId){
+               R.id.radio_bold -> textStyle = "Bold"
+               R.id.radio_italic -> textStyle = "Italic"
+               R.id.radio_allCaps -> textStyle = "All Caps"
+           }
+       }
 
         binding.colorRecyclerView.adapter = ColorItemRecyclerView(colors,
             onItemClick = fun (selectedColor: TextColor) {
-            textColor = selectedColor.toString()
+                println("SELECTED COLOR : ${selectedColor.hexString}")
+                textColor = selectedColor.hexString
         })
         binding.colorRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.colorRecyclerView.setHasFixedSize(true)
 
 
-        // Register only once here
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
                 binding.productImageView.setImageURI(uri)
-                val inputStream = contentResolver.openInputStream(uri)
-                imageBytes = inputStream?.readBytes()!!
-
+                imageString = Base64.encodeToString(contentResolver.openInputStream(uri)?.readBytes(), Base64.NO_WRAP)
             } else {
                 println("No media selected")
             }
         }
 
-        // Now trigger it on click
         binding.selectImageButton.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         binding.submitButton.setOnClickListener {
 
-
+            println("TEXT COLOR : ${textColor}")
            val productModel: ProductModel = ProductModel(
                name = binding.nameEditText.text.toString().ifBlank { "Default Name" },
                price = binding.priceEditText.text.toString().toDoubleOrNull() ?: 0.0,
                description = binding.descriptionEditText.text.toString().ifBlank { "No description" },
-               textColor = textColor.ifBlank { "#000000" },
-               textSize = binding.textSizeSlider.value.toDouble().takeIf { it > 0 } ?: 14.0,
-               textStyle = textStyle.ifBlank { "Normal" },
-               imageBytes = imageBytes
+               textColor = textColor.ifBlank { "#FFFFFF" },
+               textSize = binding.textSizeSlider.values[0].toDouble(),
+               textStyle = textStyle.ifBlank { "Bold" },
+               imageBase64String = imageString
            )
 
             val jsonString = Json.encodeToString(productModel)
 
             println(jsonString)
 
-//            val intent = FlutterActivity
-//                .withNewEngine()
-//                .build(this)
-//
-//            startActivity(intent)
-
-
-
             val engine = FlutterEngine(this)
             engine.dartExecutor.executeDartEntrypoint(
                 DartExecutor.DartEntrypoint.createDefault()
             )
-            // Start FlutterActivity with that engine
+
             FlutterEngineCache.getInstance().put("engine_id", engine)
             val intent = FlutterActivity.withCachedEngine("engine_id").build(this)
             startActivity(intent)

@@ -10,5 +10,5 @@ data class ProductModel(
     val textColor: String,
     val textSize: Double,
     val textStyle: String,
-    val imageBytes: ByteArray,
+    val imageBase64String: String,
 )
