@@ -2,6 +2,11 @@
 
 This project demonstrates how to launch a **Flutter screen from a Native Android (Kotlin) app**, enabling seamless integration between native and Flutter modules.
 
+<p float="left">
+  <img src="images/native_screen.jpg" width="200" />
+  <img src="images/flutter_screen.jpg" width="200" />
+</p>
+
 ## ✨ Features
 
 - Launch Flutter screen from an existing native Android app
@@ -37,7 +42,7 @@ This project demonstrates how to launch a **Flutter screen from a Native Android
   - Platform channels for communication
   - UI customization with received parameters
 
-## Setting up Android Project with Flutter Module
+## ✨ Setting up Android Project with Flutter Module
 
 ### 📱 Step 1: Create Native Android App 
 Use Android Studio or:
