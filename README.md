@@ -131,7 +131,7 @@ To send data (e.g., `jsonString`) from the native module to the Flutter module, 
 	    channel.invokeMethod("sendJson", jsonString)
     }, 1000)
 
-### 📥 Step 10: Receive Data in Flutter via `MethodChannel`
+### 📥 Step 7: Receive Data in Flutter via `MethodChannel`
 
 In your Flutter module, define a `MethodChannel` and use `setMethodCallHandler` to listen for incoming data (e.g., JSON) from the native module:
 
